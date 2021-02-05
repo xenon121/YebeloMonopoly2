@@ -1,0 +1,13 @@
+package com.yebelo.monopoly;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class YebeloMonopoly2ApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
