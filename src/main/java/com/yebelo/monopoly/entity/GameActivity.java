@@ -30,7 +30,22 @@ public class GameActivity {
 	
 	private String playerId;
 	
-	private String gameId;
+	private Integer gameId;
+
+	public GameActivity() {
+		
+	}
+	
+	public GameActivity(Date activityTime, ActivityStatus activityStatus, Integer amount,
+			String playerId, Integer gameId) {
+		
+		super();
+		this.activityTime = activityTime;
+		this.activityStatus = activityStatus;
+		this.amount = amount;
+		this.playerId = playerId;
+		this.gameId = gameId;
+	}
 
 	@Id
 	@GeneratedValue(generator = "system-uuid")
@@ -83,11 +98,11 @@ public class GameActivity {
 	}
 
 	@Column(name = "GAME_ID")
-	public String getGameId() {
+	public Integer getGameId() {
 		return gameId;
 	}
 
-	public void setGameId(String gameId) {
+	public void setGameId(Integer gameId) {
 		this.gameId = gameId;
 	}
 	
