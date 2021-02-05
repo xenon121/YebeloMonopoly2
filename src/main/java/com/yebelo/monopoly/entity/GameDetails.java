@@ -1,14 +1,18 @@
 package com.yebelo.monopoly.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +32,8 @@ public class GameDetails {
 	private String winner;
 	
 	private GameStatus gameStatus;
+	
+	private List<PlayerDetails> players;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +83,16 @@ public class GameDetails {
 
 	public void setGameStatus(GameStatus gameStatus) {
 		this.gameStatus = gameStatus;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "GAME_DETAIL")
+	public List<PlayerDetails> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<PlayerDetails> players) {
+		this.players = players;
 	}
 	
 }
