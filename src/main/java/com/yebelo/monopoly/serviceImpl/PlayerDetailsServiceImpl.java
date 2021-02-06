@@ -102,45 +102,46 @@ public class PlayerDetailsServiceImpl implements PlayerDetailsService {
 			throw new GameTurnAlreadyTakenException();
 		}
 		
-		Random ran = new Random();
-		
-		int diceTurn = ran.nextInt(11);
-		
-		Optional<PlaceDetails> placeDetails = placeDetailsRepo.findById((diceTurn == 0 ? 11 : diceTurn));
+		PlaceDetails placeDetails = moveTheDice(playerDetails.get());
 		
 		int balance = playerDetails.get().getBalance();
+		
 		GameActivity gameActivity = null;
 		
-		if(diceTurn == 0) {
-			playerDetails.get().setBalance(balance + placeDetails.get().getPurchaseAmount());
+		String secondPlayer = "";
+		
+		if(gameDetails.get().getPlayers().get(0).getPlayerId().equals(playerId)) {
+			secondPlayer = gameDetails.get().getPlayers().get(1).getPlayerId();
+			
+		}else {
+			secondPlayer = gameDetails.get().getPlayers().get(0).getPlayerId();
+		}
+		
+		Optional<PlayerDetails> secondPlayerDetails = playerDetailsRepo.findById(secondPlayer);;
+		
+		if(placeDetails.getPlaceId() == 11) {
+			playerDetails.get().setBalance(balance + placeDetails.getPurchaseAmount());
 			
 			gameActivity = new GameActivity(
-					new Date(), ActivityStatus.GAINED, placeDetails.get().getPurchaseAmount(), playerId, gameId);
+					new Date(), ActivityStatus.GAINED, placeDetails.getPurchaseAmount(), playerId, gameId);
 	
 				
 		}else {
 			
-			String secondPlayer = "";
+			boolean isPlaceExists = false;
 			
-			if(gameDetails.get().getPlayers().get(0).getPlayerId() == playerId) {
-				secondPlayer = gameDetails.get().getPlayers().get(1).getPlayerId();
-				
-			}else {
-				secondPlayer = playerId;
+			if(secondPlayerDetails.get().getBoughtPlaces() != null) {
+				isPlaceExists = secondPlayerDetails.get().getBoughtPlaces()
+						.stream()
+						.anyMatch(places -> places.equals(placeDetails.getPlaceName()));
 			}
-			
-			Optional<PlayerDetails> secondPlayerDetails = playerDetailsRepo.findById(secondPlayer);
-			
-			boolean isPlaceExists = secondPlayerDetails.get().getBoughtPlaces()
-										.stream()
-										.anyMatch(places -> places.equals(placeDetails.get().getPlaceName()));
 			
 			if(isPlaceExists){
 				
-				playerDetails.get().setBalance(balance - placeDetails.get().getPurchaseAmount());
+				playerDetails.get().setBalance(balance - placeDetails.getPurchaseAmount());
 				
 				gameActivity = new GameActivity(
-						new Date(), ActivityStatus.PAID_RENT, placeDetails.get().getRentAmount(), playerId, gameId);
+						new Date(), ActivityStatus.PAID_RENT, placeDetails.getRentAmount(), playerId, gameId);
 				
 				if(playerDetails.get().getBalance() < 0) {
 					
@@ -153,29 +154,60 @@ public class PlayerDetailsServiceImpl implements PlayerDetailsService {
 				
 			}else {
 				
-				if (playerDetails.get().getBalance() > placeDetails.get().getPurchaseAmount()) {
+				if (playerDetails.get().getBalance() > placeDetails.getPurchaseAmount()) {
 					
-					playerDetails.get().setBalance(balance - placeDetails.get().getPurchaseAmount());
+					playerDetails.get().setBalance(balance - placeDetails.getPurchaseAmount());
 					
 					gameActivity = new GameActivity(
-							new Date(), ActivityStatus.BOUGHT, placeDetails.get().getRentAmount(), playerId, gameId);
+							new Date(), ActivityStatus.BOUGHT, placeDetails.getRentAmount(), playerId, gameId);
 					
-					playerDetails.get().getBoughtPlaces().add(placeDetails.get().getPlaceName());
+					if(playerDetails.get().getBoughtPlaces() == null) {
+						playerDetails.get().setBoughtPlaces(Arrays.asList(placeDetails.getPlaceName()));
+							
+					}else {
+						playerDetails.get().getBoughtPlaces().add(placeDetails.getPlaceName());
+					}
+					
 				}
 			}
 			
 		}
 		
-		playerDetailsRepo.save(playerDetails.get());
-		gameActivityRepo.save(gameActivity);
+		playerDetails.get().setCurrentTurn(false);
+		secondPlayerDetails.get().setCurrentTurn(true);
 		
-		if(gameDetails.get().getGameStatus().equals(GameStatus.FINISHED)) {
-			return gameDetails.get();
-			
-		}else {
-			return gameActivity;
+		playerDetailsRepo.save(playerDetails.get());
+		playerDetailsRepo.save(secondPlayerDetails.get());
+		
+		if(gameActivity != null) {
+			gameActivityRepo.save(gameActivity);
 		}
 		
+		return gameDetails.get();
+		
+	}
+	
+	private PlaceDetails moveTheDice(PlayerDetails playerDetails) {
+		
+		Random ran = new Random();
+		int diceTurn;
+		
+		boolean isPlaceExists = true;
+		
+		while(true) {
+			
+			diceTurn = ran.nextInt(11);
+			
+			PlaceDetails placeDetails = placeDetailsRepo.findById((diceTurn == 0 ? 11 : diceTurn)).get();
+			
+			isPlaceExists = playerDetails.getBoughtPlaces()
+					.stream()
+					.anyMatch(places -> places.equals(placeDetails.getPlaceName()));
+			
+			if(!isPlaceExists) {
+				return placeDetails;
+			}
+		}
 	}
 
 }

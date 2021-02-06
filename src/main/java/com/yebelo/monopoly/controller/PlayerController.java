@@ -36,10 +36,12 @@ public class PlayerController {
 		
 		}catch (MaximumPlayerCreatedException | IdentityDoesNotExistsException e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 			
 		}catch (Exception e) {
 			logger.error("not able to create new player...");
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not able to create new player...");
 		}
 	}
@@ -54,10 +56,12 @@ public class PlayerController {
 		
 		}catch (GameTurnAlreadyTakenException | IdentityDoesNotExistsException | NotEnoughPlayerException e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 			
 		}catch (Exception e) {
 			logger.error("not able to take turn for play...");
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not able to take turn for play...");
 		}
 	}

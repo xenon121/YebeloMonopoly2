@@ -33,6 +33,7 @@ public class GameController {
 		
 		}catch (Exception e) {
 			logger.error("not able to fetch all game details...");
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not able to fetch all game details");
 		}
 		
@@ -46,6 +47,7 @@ public class GameController {
 			
 		}catch (IdentityDoesNotExistsException e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -58,6 +60,7 @@ public class GameController {
 			
 		}catch (IdentityDoesNotExistsException e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 	}
@@ -70,10 +73,12 @@ public class GameController {
 		
 		}catch (GameSessionAlreadyExists e) {
 			logger.error(e.getMessage());
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 			
 		}catch (Exception e) {
 			logger.error("not able to create new game...");
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not able to create new game...");
 		}
 	}
@@ -86,6 +91,7 @@ public class GameController {
 		
 		}catch (Exception e) {
 			logger.error("unable to perform finish game...");
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unable to perform finish game...");
 		}
 	}
