@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "5d632469-7d55-4d67-a9bd-9f6cfd4e5679",
+		"name": "YebeloMonopoly",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "game details",
+			"item": [
+				{
+					"name": "getAllGameDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/game-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"game-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create new Game",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/game-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"game-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "finish Game",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/game-info",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"game-info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllGameDetailsById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/game-info/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"game-info",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllGameDetailsByPlayerId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/game-info/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"game-info",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "player detail apis",
+			"item": [
+				{
+					"name": "create new Player",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/player/game/2?playerName=player1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"player",
+								"game",
+								"2"
+							],
+							"query": [
+								{
+									"key": "playerName",
+									"value": "player1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "play monopoly",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/monopoly/player/40285fad77724eb50177724f1bdc0000/game/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"monopoly",
+								"player",
+								"40285fad77724eb50177724f1bdc0000",
+								"game",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
